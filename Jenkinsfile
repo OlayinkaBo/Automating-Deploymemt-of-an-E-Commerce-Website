@@ -3,13 +3,13 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'olayinkabo2'
         IMAGE_NAME = 'nginx-app'
-        TARGET_SERVER = '44.210.125.177'
+        TARGET_SERVER = '44.203.196.81'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
     stages {
         stage('Checkout') {
             steps {
-                git(credentialsId: 'git-credentials', url: 'https://github.com/OlayinkaBo/AUTOMATING-DEPLOYMENT-OF-AN-E-COMMERCE-WEBSITE.git')
+                git(credentialsId: 'git-credentials', url: 'https://github.com/OlayinkaBo/Automating-Deploymemt-of-an-E-Commerce-Website.git')
             }
         }
         stage('Docker Build') {
