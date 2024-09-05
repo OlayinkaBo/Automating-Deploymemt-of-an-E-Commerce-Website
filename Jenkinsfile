@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY = 'olayinkabo2'
+        DOCKER_REGISTRY = 'https://hub.docker.com/repositories/olayinkabo2'
         IMAGE_NAME = 'nginx-app'
         TARGET_SERVER = '44.203.196.81'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
