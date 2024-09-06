@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'https://hub.docker.com/repositories/olayinkabo2'
         IMAGE_NAME = 'nginx-app'
-        TARGET_SERVER = '34.207.194.116'
+        TARGET_SERVER = '44.202.113.50'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
     stages {
