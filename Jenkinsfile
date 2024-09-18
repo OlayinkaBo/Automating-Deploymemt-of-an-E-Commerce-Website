@@ -1,20 +1,17 @@
 pipeline {
     agent any
     environment {
-        // Docker registry URL and image details
-        DOCKER_REGISTRY = 'https://hub.docker.com/repositories/olayinkabo2'
+        // Use the correct format for Docker registry and image name
+        DOCKER_REGISTRY = 'olayinkabo2' // Docker username
         IMAGE_NAME = 'nginx-app'
-        
-        // Target server details
-        TARGET_SERVER = '3.84.196.86'
+        TARGET_SERVER = '34.227.112.177'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
     
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub, specifying the correct branch (main in this case)
-                git branch: 'main', // Replace 'main' with your actual branch name if different
+                git branch: 'main', 
                     credentialsId: 'git-credentials', 
                     url: 'https://github.com/OlayinkaBo/Automating-Deploymemt-of-an-E-Commerce-Website.git'
             }
@@ -23,7 +20,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    // Build the Docker image and tag it with BUILD_ID
+                    // Build the Docker image with the correct format
                     docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
@@ -32,7 +29,6 @@ pipeline {
         stage('Push to Registry') {
             steps {
                 script {
-                    // Push Docker image to the registry with credentials
                     docker.withRegistry('', 'docker-registry-credentials') {
                         docker.image("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}").push()
                     }
@@ -43,7 +39,6 @@ pipeline {
         stage('Deploy to Server') {
             steps {
                 script {
-                    // SSH into the target server, stop, remove, and run the new Docker container
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no user@${TARGET_SERVER} \\
@@ -60,7 +55,6 @@ pipeline {
 
     post {
         always {
-            // Clean up the workspace after the build
             cleanWs()
         }
     }
