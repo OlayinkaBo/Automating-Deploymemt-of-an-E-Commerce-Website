@@ -6,7 +6,7 @@ pipeline {
         IMAGE_NAME = 'nginx-app'
         
         // Target server details
-        TARGET_SERVER = '34.227.112.177'
+        TARGET_SERVER = '3.84.196.86'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
     
