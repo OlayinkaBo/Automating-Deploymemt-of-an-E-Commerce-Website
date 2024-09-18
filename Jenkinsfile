@@ -13,8 +13,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub using credentials
-                git credentialsId: 'git-credentials', 
+                // Checkout code from GitHub, specifying the correct branch (main in this case)
+                git branch: 'main', // Replace 'main' with your actual branch name if different
+                    credentialsId: 'git-credentials', 
                     url: 'https://github.com/OlayinkaBo/Automating-Deploymemt-of-an-E-Commerce-Website.git'
             }
         }
