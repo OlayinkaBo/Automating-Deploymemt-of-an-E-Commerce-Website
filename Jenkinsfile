@@ -1,36 +1,48 @@
 pipeline {
     agent any
     environment {
+        // Docker registry URL and image details
         DOCKER_REGISTRY = 'https://hub.docker.com/repositories/olayinkabo2'
         IMAGE_NAME = 'nginx-app'
+        
+        // Target server details
         TARGET_SERVER = '34.227.112.177'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
+    
     stages {
         stage('Checkout') {
             steps {
-                git(credentialsId: 'git-credentials', url: 'https://github.com/OlayinkaBo/Automating-Deploymemt-of-an-E-Commerce-Website.git')
+                // Checkout code from GitHub using credentials
+                git credentialsId: 'git-credentials', 
+                    url: 'https://github.com/OlayinkaBo/Automating-Deploymemt-of-an-E-Commerce-Website.git'
             }
         }
+
         stage('Docker Build') {
             steps {
                 script {
+                    // Build the Docker image and tag it with BUILD_ID
                     docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
         }
+
         stage('Push to Registry') {
             steps {
                 script {
+                    // Push Docker image to the registry with credentials
                     docker.withRegistry('', 'docker-registry-credentials') {
                         docker.image("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}").push()
                     }
                 }
             }
         }
+
         stage('Deploy to Server') {
             steps {
                 script {
+                    // SSH into the target server, stop, remove, and run the new Docker container
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no user@${TARGET_SERVER} \\
@@ -44,8 +56,10 @@ pipeline {
             }
         }
     }
+
     post {
         always {
+            // Clean up the workspace after the build
             cleanWs()
         }
     }
