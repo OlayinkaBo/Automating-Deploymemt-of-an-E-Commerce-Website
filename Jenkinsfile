@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         // Use the correct format for Docker registry and image name
-        DOCKER_REGISTRY = 'olayinkabo2' // Docker username
+        DOCKER_REGISTRY = 'olayinkabo2'/nginx-app:8
+
         IMAGE_NAME = 'nginx-app'
         TARGET_SERVER = '3.86.95.26'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
