@@ -19,8 +19,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    // Build the Docker image with the correct format
-                    docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
+                    // Specify the correct path to the Dockerfile in the nginx-app directory
+                    docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}", "-f nginx-app/Dockerfile .")
                 }
             }
         }
