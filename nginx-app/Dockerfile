@@ -5,7 +5,8 @@ FROM nginx:latest
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the static website files from the local html directory to the Nginx directory
-COPY html /usr/share/nginx/html
+COPY nginx-app/html /usr/share/nginx/html
+
 
 # Expose port 80 for the Nginx server
 EXPOSE 80

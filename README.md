@@ -258,7 +258,7 @@ pipeline {
 - Choose Pipeline 
 ![alt text](<Images/jenkins config.PNG>)
 
-In the general section, Check Github prject and provide project url/
+In the general section, Check Github project and provide project url/
 
 ![alt text](<Images/jenkins config2.PNG>)
 
@@ -270,7 +270,7 @@ In Pipeline section, choose pipeline script from SCM
 ![alt text](<Images/jenkins config4.PNG>)
 ![alt text](<Images/jenkins config5.png>)
 
-### Source code management Repository Integrationm
+### Source code management Repository Integration
 
 #### Create source code
 
