@@ -40,7 +40,7 @@ pipeline {
                 script {
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no user@${TARGET_SERVER} \\
+                        ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_SERVER} \\
                         'docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID} && \\
                         docker stop ${IMAGE_NAME} || true && \\
                         docker rm ${IMAGE_NAME} || true && \\
