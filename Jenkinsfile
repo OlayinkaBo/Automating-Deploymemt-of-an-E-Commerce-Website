@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'olayinkabo2' // DockerHub username
         IMAGE_NAME = 'nginx-app'
-        TARGET_SERVER = '54.166.0.229'
+        TARGET_SERVER = '18.212.30.69'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
 
