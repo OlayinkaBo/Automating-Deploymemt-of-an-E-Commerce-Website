@@ -280,24 +280,30 @@ In Pipeline section, choose pipeline script from SCM
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY = 'olayinkabo2'
+        DOCKER_REGISTRY = 'olayinkabo2' // DockerHub username
         IMAGE_NAME = 'nginx-app'
-        TARGET_SERVER = '44.210.125.177'
+        TARGET_SERVER = '54.166.0.229'
         SSH_CREDENTIALS_ID = 'application-server-ssh'
     }
+
     stages {
         stage('Checkout') {
             steps {
-                git(credentialsId: 'git-credentials', url: 'https://github.com/OlayinkaBo/AUTOMATING-DEPLOYMENT-OF-AN-E-COMMERCE-WEBSITE.git')
+                git branch: 'main', 
+                    credentialsId: 'git-credentials', 
+                    url: 'https://github.com/OlayinkaBo/Automating-Deploymemt-of-an-E-Commerce-Website.git'
             }
         }
+
         stage('Docker Build') {
             steps {
                 script {
-                    docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
+                    // Specify the correct path to the Dockerfile in the nginx-app directory
+                    docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}", "-f nginx-app/Dockerfile .")
                 }
             }
         }
+
         stage('Push to Registry') {
             steps {
                 script {
@@ -307,12 +313,13 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to Server') {
             steps {
                 script {
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no user@${TARGET_SERVER} \\
+                        ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_SERVER} \\
                         'docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID} && \\
                         docker stop ${IMAGE_NAME} || true && \\
                         docker rm ${IMAGE_NAME} || true && \\
@@ -323,12 +330,14 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             cleanWs()
         }
     }
 }
+
 
 ```
 ![alt text](Images/Jenkinsfile2.PNG)
@@ -346,8 +355,27 @@ Connect Jenkins to a version control system e.g Github for source code managemen
 ![alt text](Images/webhooks3.png)
 ![alt text](Images/webhooks4.PNG)
 
+### Run the Jenkins Pipeline
+
+1. Trigger the Pipeline:
+   - Manually trigger the pipeline or set up a webhook to trigger it on code commits.
+
+  ![alt text](<Images/Trigger pipeline.PNG>) 
+
+2. Monitor the Pipeline:
+   - Monitor each stage in Jenkins (checkout, build, test, Docker build, push, deploy) for successful completion.
+
+  ![alt text](<Images/Monitor the pipeline.PNG>) 
+
+3. Verify Deployment:
+   - Once the pipeline completes, access the application via the target server's IP or domain.
+
+![alt text](<Images/Verify Deployment.PNG>)
 
 
+# Summary
+
+By following this process, you can deploy your containerized application. Jenkins will handle the CI/CD pipeline, building and pushing Docker images, and deploying them directly to your target servers via SSH. 
 
 
 
